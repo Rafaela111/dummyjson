@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify'; // ✅ Importa o toast
 
 function ProductDetail() {
   const { id } = useParams();
@@ -8,7 +9,13 @@ function ProductDetail() {
   useEffect(() => {
     fetch(`https://dummyjson.com/products/${id}`)
       .then(res => res.json())
-      .then(data => setProduct(data));
+      .then(data => {
+        setProduct(data);
+        toast.success('Detalhes do produto carregados!');
+      })
+      .catch(() => {
+        toast.error('Erro ao carregar os detalhes do produto.');
+      });
   }, [id]);
 
   if (!product) return <p>Carregando...</p>;
